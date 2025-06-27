@@ -1,0 +1,145 @@
+﻿@model knowledgeSphere.Models.Student
+
+@{
+    ViewData["Title"] = "StudentLogin";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        /* Background styles */
+        body {
+            background-image: url("/pics/stdent.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: white;
+            height: 100vh; /* Set full viewport height */
+            margin: 0; /* Reset default body margin */
+        }
+
+        /* Form styles */
+        .custom-form-container {
+            max-width: 400px; /* Set max width for the form */
+            padding: 30px;
+            background-color: rgba(150, 111, 51, 0.5); /* Soft brownish transparent tone */
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            margin: auto;
+            margin-top: 50px;
+            margin-left: 50px;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: black; /* Header color */
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: white; /* Label color */
+            margin-bottom: 10px; /* Adjusted margin for spacing */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 24px); /* Adjusted width */
+            padding: 12px; /* Adjusted padding */
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #8e6f33;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #73582b;
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Bootstrap Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">KnowledgeSphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/StudentLogin">Student Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/StudentRegister">Student Signup</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Form Section -->
+    <div class="container">
+        <h1 class="mt-5">Student Login</h1>
+        <hr />
+        <div class="row">
+            <div class="col-md-6 mx-auto custom-form-container">
+                @{
+                    if (ViewBag.Message != null)
+                    {
+                        <p style="color:red; text-align: center">@ViewBag.Message</p>
+                    }
+                    if (TempData["Success"] != null)
+                    {
+                        <p style="color:green; text-align: center">@TempData["Success"]</p>
+                    }
+                }
+                <form asp-action="StudentLogin">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label">Email</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Password</label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Login" class="btn btn-primary" />
+                    </div>
+                </form>
+                <p class="text-center">
+                    Don't Have An Account? <a asp-controller="Home" asp-action="StudentRegister">Register Here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

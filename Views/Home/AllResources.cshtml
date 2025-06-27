@@ -1,0 +1,145 @@
+﻿@model List<knowledgeSphere.Models.ResourceView>
+
+@{
+    ViewData["Title"] = "All Resources";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFUiRpO86WIcF6W1U4l2U/OI6PZpX2Q"
+          crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light Gray background */
+            padding-top: 56px; /* Adjusted for navbar height */
+        }
+
+        .resource-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .resource {
+            border: 2px solid #007bff; /* Blue border */
+            border-radius: 15px; /* Curved border */
+            margin: 10px;
+            padding: 15px;
+            background-color: #fff; /* White background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+            width: 300px;
+        }
+
+        .navbar {
+            background-color: #007bff; /* Blue Navbar */
+        }
+
+        .navbar-brand {
+            color: #fff !important; /* White text */
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important; /* White text */
+        }
+
+        /* Style for Facebook-like feed */
+        .feed-container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .post {
+            background-color: #fff;
+            border: 1px solid #dddfe2;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Search bar style */
+        .search-bar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="StDashboard">KnowledgeSphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Move the Student Dashboard link to the right -->
+                <li class="nav-item">
+                    <a class="nav-link" href="StDashboard">Student Dashboard</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main aria-labelledby="title" class="container mt-5">
+        <h2 id="title">@ViewData["Title"]</h2>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" class="form-control" placeholder="Search..." id="searchInput">
+        </div>
+
+        <!-- Facebook-like feed container -->
+        <div class="feed-container" id="resourceFeed">
+            @if (Model.Any())
+            {
+                @foreach (var resource in Model)
+                {
+                    <div class="post">
+                        <p>Resource Name: @resource.ResourceName</p>
+                        <p>Topic/Description: @resource.TopicDescription</p>
+
+                        @if (resource.FileData != null && resource.FileData.Length > 0)
+                        {
+                            <p>File:</p>
+                            <p>
+                                <a href="data:application/octet-stream;base64,@(Convert.ToBase64String(resource.FileData))" download="@($"{resource.FileName}")">@resource.FileName</a>
+                            </p>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No resources found.</p>
+            }
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFUiRpO86WIcF6W1U4l2U/OI6PZpX2Q"
+            crossorigin="anonymous"></script>
+
+    <script>
+        // JavaScript for search functionality
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#resourceFeed .post").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+</html>

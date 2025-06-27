@@ -1,0 +1,212 @@
+﻿@model knowledgeSphere.Models.Course
+
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+            height: 350vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #007BFF;
+        }
+
+        p {
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Styles for the layout */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f5f5f5;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+            li:hover {
+                transform: translateY(-5px);
+                background-color: #e0e0e0;
+            }
+
+        h4 {
+            color: #007BFF;
+        }
+
+        strong {
+            color: #007BFF;
+        }
+
+        h3 {
+            text-align: center;
+            color: #007BFF;
+        }
+
+        button.btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            button.btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        .text-danger {
+            color: #dc3545;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #007BFF;
+            padding: 15px;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .back-button {
+            margin-top: 20px;
+        }
+
+            .back-button a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+                .back-button a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="Dashboard">knowledgeSphere</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>@Model.CourseNo - @Model.CourseTitle</h2>
+        <p>Description: @Model.Description</p>
+    </div>
+
+    <div class="container mt-4">
+        <a class="back-button" href="Dashboard">&lt; Back to Dashboard</a>
+        <h3>Posts</h3>
+        @if (Model.Posts.Any())
+        {
+            <ul>
+                @foreach (var post in Model.Posts)
+                {
+                    <li>
+                        <h4>@post.Title</h4>
+                        <p>@post.Content</p>
+                        @if (post.FileData != null && post.FileData.Length > 0)
+                        {
+                            <p>
+                                <strong>Attachment:</strong>
+                                <a href="data:@post.ContentType;base64,@Convert.ToBase64String(post.FileData)" download="@post.FileName">@post.FileName</a>
+                            </p>
+                        }
+                        <p>Posted on: @post.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No posts available for this course.</p>
+        }
+
+        <button id="showFormBtn" class="btn btn-primary">Show Form</button>
+
+        <div id="postForm" style="display: none;">
+            <h3>Create a New Post</h3>
+            <form asp-action="CreatePost" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea id="content" name="content" class="form-control" required></textarea>
+                </div>
+                <!-- file input field -->
+                <div class="form-group">
+                    <label for="file">File:</label>
+                    <input type="file" id="file" name="file" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Create Post</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('showFormBtn').addEventListener('click', function () {
+            document.getElementById('postForm').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>

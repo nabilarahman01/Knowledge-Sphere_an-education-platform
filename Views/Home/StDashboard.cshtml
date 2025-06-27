@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #3498db;
+        }
+
+        .navbar {
+            background-color: #3498db;
+            padding: 15px;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+            .navbar-nav .nav-item {
+                margin-right: 20px;
+            }
+
+            .navbar-nav .nav-link {
+                color: #fff;
+            }
+
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            float: left;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                .sidebar ul li {
+                    padding: 15px 20px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    border-top-right-radius: 20px;
+                    border-bottom-right-radius: 20px;
+                }
+
+                    .sidebar ul li:hover {
+                        background-color: #3498db;
+                        color: #fff;
+                    }
+
+        .content {
+            float: left;
+            width: calc(100% - 250px);
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .view-button {
+            background-color: #3498db;
+            color: #fff;
+            /* padding: 8px 12px; */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 2px;
+            transition: background-color 0.3s;
+            width: 80px;
+            text-align: center;
+            height: 30px;
+        }
+
+            .view-button:hover {
+                background-color: #3e9af5;
+            }
+
+        .enroll-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+            .enroll-form label {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .enroll-form input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 15px;
+                box-sizing: border-box;
+            }
+
+            .enroll-form button {
+                background-color: #3498db;
+                color: #fff;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .enroll-form button:hover {
+                    background-color: #3e9af5;
+                }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+            .search-bar input {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">knowledgeSphere</a>
+        <ul class="navbar-nav">
+        </ul>
+    </nav>
+
+    <main aria-labelledby="Title">
+        <div class="sidebar">
+            <ul>
+                @* <li onclick="location.href='@Url.Action("Classes")'">Classes</li> *@
+                <li onclick="location.href='@Url.Action("StResource")'">Share Resource</li>
+                <li onclick="location.href='@Url.Action("AllResources")'">All Resources</li>
+                <li onclick="location.href='@Url.Action("ListQ")'">Questions&Answers</li>
+                <li onclick="location.href='@Url.Action("StudentLogout")'">Logout</li>
+            </ul>
+        </div>
+
+        <!-- Content Area for specific content -->
+        <div class="content" id="specificContent">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="classSearch" placeholder="Search for courses...">
+            </div>
+
+            <!-- Display all courses in a responsive table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Email</th>
+                        <th>Contents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.CourseTitle</td>
+                            <td>@course.Mail</td>
+                            <td><button class="view-button" onclick="goToCourse('@course.Id')">View</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Enroll Form -->
+       @*  <div class="enroll-form" id="enrollForm">
+            <label for="sessionEmail">Session Email:</label>
+            <input type="text" id="sessionEmail" placeholder="Enter session email">
+
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" placeholder="Enter student ID">
+
+            <label for="selectedCourseId">Course ID:</label>
+            <input type="text" id="selectedCourseId" readonly>
+
+            <button onclick="enroll()">Enroll</button>
+        </div> *@
+    </main>
+
+    <script>
+        // function showEnrollForm(courseId) {
+        //     var enrollForm = document.getElementById('enrollForm');
+        //     var selectedCourseIdInput = document.getElementById('selectedCourseId');
+
+        //     selectedCourseIdInput.value = courseId;
+        //     enrollForm.style.display = 'block';
+        // }
+
+        // function enroll() {
+        //     // Add your enroll logic here
+        //     // Retrieve values from input fields: sessionEmail, studentId, selectedCourseId
+        //     // Perform enrollment action
+        //     // You may want to use AJAX to send the data to the server
+        //     // Hide the form after successful enrollment
+
+        //     var enrollForm = document.getElementById('enrollForm');
+        //     enrollForm.style.display = 'none';
+        // }
+
+        // Add search functionality
+        function goToCourse(courseId) {
+            console.log('Navigating to course:', courseId);
+
+            window.location.href = '/Home/StCourseContent?courseId=' + courseId;
+        }
+
+        document.getElementById('classSearch').addEventListener('input', function () {
+            var searchValue = this.value.toLowerCase();
+            var table = document.querySelector('.table');
+            var rows = table.querySelectorAll('tbody tr');
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var courseName = row.cells[0].innerText.toLowerCase();
+                var email = row.cells[1].innerText.toLowerCase();
+
+                if (courseName.includes(searchValue) || email.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+﻿@model knowledgeSphere.Models.Course
+
+@{
+    ViewData["Title"] = "AddCourse";
+}
+
+string Value = @ViewBag.SessionValue;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Background styles */
+        body {
+            background-image: url("/pics/course.jpg"); /* Replace with your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: white;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 105vh; /* Set full viewport height */
+            margin: 0; /* Reset default body margin */
+        }
+
+        /* Form styles */
+        form {
+            max-width: 500px; /* Set max width for the form */
+            padding: 20px;
+            background-color: rgba(173, 216, 230, 0.7); /* Light blue transparent tone */
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-weight: bold;
+            color: black; /* Header color */
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        h4 {
+            color: white; /* Subheader color */
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: white; /* Label color */
+            margin-bottom: 5px; /* Adjusted margin for spacing */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 24px); /* Adjusted width */
+            padding: 12px; /* Adjusted padding */
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.7);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #2980b9;
+            }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">KnowledgeSphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="Dashboard">Teacher Dashboard</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>Add Course</h1>
+
+
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="AddCourse">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="CourseNo" class="control-label"></label>
+                    <input asp-for="CourseNo" class="form-control" />
+                    <span asp-validation-for="CourseNo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CourseTitle" class="control-label"></label>
+                    <input asp-for="CourseTitle" class="form-control" />
+                    <span asp-validation-for="CourseTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Mail" class="control-label"></label>
+                    <input asp-for="Mail" class="form-control" readonly />
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Add Course" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

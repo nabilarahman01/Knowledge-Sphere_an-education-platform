@@ -1,0 +1,12 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "dbcs": "server=LAPTOP-D0LHKSJE\\SQLEXPRESS; database=Knowledge; trusted_connection=true"
+  },
+  "AllowedHosts": "*"
+}

@@ -1,0 +1,189 @@
+﻿@model List<knowledgeSphere.Models.QnAViewModel>
+
+   @{ ViewBag.Title = "Q&A Forum";}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFUiRpO86WIcF6W1U4l2U/OI6PZpX2Q"
+          crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light Gray background */
+        }
+
+        .navbar {
+            background-color: #007bff; /* Blue Navbar */
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand {
+            color: #fff !important; /* White text */
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        h2, h4, h5 {
+            color: #007bff; /* Blue heading color */
+        }
+
+        .question-container {
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .answer-container {
+            border: 1px solid #dddfe2;
+            border-radius: 10px;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            /* .answer-container p {
+                font-weight: bold; 
+            } */
+
+        form {
+            margin-top: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 16px; /* Increase font size */
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        a.ask-question {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 18px; /* Increase font size */
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .answer-item {
+            margin-bottom: 25px; /* Add some spacing between each answer */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="StDashboard">KnowledgeSphere</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        </div>
+    </nav>
+
+    <main aria-labelledby="title" class="container">
+        <h2 id="title">@ViewData["Title"]</h2>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search..." style="font-size: 18px;">
+        </div>
+
+        @if (Model.Any())
+        {
+            @foreach (var qs in Model)
+            {
+                <div class="question-container">
+                    <h4 style="font-size: 20px; font-weight: bold;">@qs.Title</h4>
+                    <p style="font-size: 16px; font-weight: bold;">@qs.Content</p>
+                    <p style="font-size: 16px;">Author: @qs.Author</p>
+                    <p style="font-size: 16px;">Created At: @qs.CreatedAt</p>
+
+                    <div class="answer-container">
+                        <h5 style="font-size: 18px;">Answers:</h5>
+                        @if (qs.Answers != null && qs.Answers.Any())
+                        {
+                            @foreach (var answer in qs.Answers)
+                            {
+                                <div class="answer-item">
+                                    <p style="font-size: 16px; font-weight: bold;"> <span>&#8226;</span>@answer.Content</p>
+                                    <p style="font-size: 16px;">Author: @answer.Author</p>
+                                    <p style="font-size: 16px;">Created At: @answer.CreatedAt</p>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="font-size: 16px;">No Answers Yet</p>
+                        }
+                    </div>
+
+                    <!-- Add form for posting new answers -->
+                    <form asp-action="NewAnswer" asp-controller="Home" method="post">
+                        <input type="hidden" name="questionId" value="@qs.Id" />
+
+                        <label for="ansContent" style="font-size: 16px;">Add Answer:</label>
+                        <textarea id="ansContent" name="Content" required style="font-size: 16px;"></textarea>
+
+                        <input type="hidden" name="Author" value="@Context.Session.GetString("YourSessionKey")" />
+                        <label style="font-size: 16px; color: white">Author: @Context.Session.GetString("YourSessionKey")</label>
+
+                        <button type="submit">Submit Answer</button>
+                    </form>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="font-size: 18px;">No Questions found.</p>
+        }
+    </main>
+
+    <a asp-action="NewQuestionPage" asp-controller="Home" class="ask-question">Ask a Question</a>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyFUiRpO86WIcF6W1U4l2U/OI6PZpX2Q"
+            crossorigin="anonymous"></script>
+
+    <script>
+        // JavaScript for search functionality
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".question-container").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "Welcome Teacher";
+    String SessionValue = @ViewBag.Mysession;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <style>
+        /* Styles for the layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f7fc;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        
+
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            background-color: #d6eaf8;
+            float: left;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                .sidebar ul li {
+                    padding: 15px 20px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    border-top-right-radius: 20px;
+                    border-bottom-right-radius: 20px;
+                    background-color: #c2e0f7;
+                }
+
+                    .sidebar ul li:hover {
+                        background-color: #2c74b5;
+                        color: #fff;
+                    }
+
+        .content {
+            float: left;
+            width: calc(100% - 250px);
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .course-card {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 8px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #bdc3c7; /* Thin border */
+            transition: transform 0.3s, background-color 0.3s, border 0.3s;
+            cursor: pointer;
+            width: 300px;
+        }
+
+            .course-card h3 {
+                color: #2c3e50; /* Darker text color for CourseNo */
+            }
+
+            .course-card:hover {
+                transform: translateY(-5px);
+                background-color: #e0e0e0;
+                border-color: #3498db;
+            }
+
+                .course-card:hover h3 {
+                    color: #3498db;
+                    font-weight: bold;
+                }
+
+        /* Popup Form Styles */
+        .popup-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #e4f1f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+            .popup-form h3 {
+                margin-top: 0;
+            }
+
+            .popup-form label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .popup-form input[type="text"],
+            .popup-form button {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+            .popup-form button {
+                background-color: #3e9af5;
+                color: #fff;
+                cursor: pointer;
+            }
+
+                .popup-form button:hover {
+                    background-color: #357dbf;
+                }
+
+        .logout-button button {
+            margin-left: 1400px;
+        }
+    </style>
+</head>
+<body>
+
+    <main aria-labelledby="title">
+        <h2 id="title">@ViewBag.Title</h2>
+
+        <!-- Navigation Bar -->
+       
+
+        <!-- Sidebar with options -->
+        <div class="sidebar">
+            <ul>
+                <li onclick="location.href='@Url.Action("AddCourse")'" style="cursor: pointer;">
+                    <span class="plain-text-link">Add Course</span>
+                </li>
+                <li onclick="location.href='@Url.Action("EnrollStudents")'" style="cursor: pointer;">
+                    <span class="plain-text-link">Enroll Students</span>
+                </li>
+                <li onclick="location.href='@Url.Action("ListQ")'" style="cursor: pointer;">
+                    <span class="plain-text-link">Questions&Answers</span>
+                </li>
+                <li onclick="location.href='@Url.Action("TeacherLogout")'" style="cursor: pointer;">
+                    <span class="plain-text-link">Sign Out</span>
+                </li>
+                
+            </ul>
+        </div>
+
+        <!-- Content Area for Course Cards -->
+        <div class="content" id="courseContainer">
+            @foreach (var course in ViewBag.TeacherCourses)
+            {
+                <div class="course-card" onclick="goToCourse('@course.CourseNo')">
+                    <h3><b>@course.CourseNo</b></h3>
+                    <p>Title: @course.CourseTitle</p>
+                    <p>Description: @course.Description</p>
+                </div>
+            }
+        </div>
+    </main>
+
+    <script>
+        function goToCourse(courseName) {
+            console.log('Navigating to course:', courseName);
+
+            window.location.href = '/Home/CourseContent?course=' + encodeURIComponent(courseName);
+        }
+    </script>
+
+</body>
+</html>
